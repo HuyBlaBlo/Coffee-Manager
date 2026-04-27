@@ -1,1 +1,2 @@
-Put product images here named like maSP.png (e.g. 1.png, 2.png) or it will use placeholder
+
+nhét cái ảnh như msSP.png (1.png,2.png) vào folder này okay
