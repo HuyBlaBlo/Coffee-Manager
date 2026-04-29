@@ -16,7 +16,6 @@ public class MainController implements ActionListener{
 //		cái dòng này tao không biết viết vậy là có đúng hay không, hoặc thay 
 //		nó bawnfgc cái hàm duowis anh em coi rồi sửa giúp tao
 		this.mainFrame.addMenuAction(this);
-		
 		initPanel();
 	}
 
@@ -32,7 +31,7 @@ public class MainController implements ActionListener{
 		POS posView = new POS();
 	    new POSController(posView);
 		mainFrame.addSubPanel(posView, "POS");
-		
+		mainFrame.showCard("POS");
 		// tuowng tự cho các csai panel khác 
 		
 		

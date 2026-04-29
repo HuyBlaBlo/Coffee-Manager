@@ -3,7 +3,6 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -15,7 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+
 
 import utils.Auth;
 
@@ -30,6 +29,7 @@ public class MainFrame extends JFrame{
 	private JButton btnStats;
 	private JButton btnLogout;
 
+	
 	public MainFrame() {
 		init();
 	}
@@ -86,7 +86,9 @@ public class MainFrame extends JFrame{
         pnlSideBar.add(btnStats);
         
         // nut dang xuat
-        btnLogout = createMenuButton("Đăng Xuất");
+        
+        btnLogout = createMenuButton("Logout");
+        pnlSideBar.add(Box.createVerticalStrut(100));
         pnlSideBar.add(btnLogout);
         
         

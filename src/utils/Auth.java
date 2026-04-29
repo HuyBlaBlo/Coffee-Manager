@@ -17,7 +17,7 @@ public class Auth {
 	
 	//kiem tra co phai la quan ly khong de cap quyen
 	public static boolean isManager() {
-		return isLogin() && "Quản lý".equalsIgnoreCase(user.getVaiTro());
+		return isLogin() && "Quản lý".equalsIgnoreCase(user.getChucVu());
 	}
 	
 }

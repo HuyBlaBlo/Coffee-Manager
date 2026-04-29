@@ -3,17 +3,15 @@ package entity;
 public class NhanVien {
     private String maNV;
     private String tenNV;
-    private String matKhau;
-    private String vaiTro;
+    private String chucVu;
     private String trangThai;
 
     public NhanVien() {}
 
-    public NhanVien(String maNV, String tenNV, String matKhau, String vaiTro, String trangThai) {
+    public NhanVien(String maNV, String tenNV,String chucVu, String trangThai) {
         this.maNV = maNV;
         this.tenNV = tenNV;
-        this.matKhau = matKhau;
-        this.vaiTro = vaiTro;
+        this.chucVu = chucVu;
         this.trangThai = trangThai;
     }
 
@@ -33,20 +31,12 @@ public class NhanVien {
 		this.tenNV = tenNV;
 	}
 
-	public String getMatKhau() {
-		return matKhau;
+	public String getChucVu() {
+		return chucVu;
 	}
 
-	public void setMatKhau(String matKhau) {
-		this.matKhau = matKhau;
-	}
-
-	public String getVaiTro() {
-		return vaiTro;
-	}
-
-	public void setVaiTro(String vaiTro) {
-		this.vaiTro = vaiTro;
+	public void setChucVu(String chucVu) {
+		this.chucVu = chucVu;
 	}
 
 	public String getTrangThai() {
