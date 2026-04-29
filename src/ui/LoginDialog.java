@@ -138,6 +138,13 @@ public class LoginDialog extends JFrame{
         JOptionPane.showMessageDialog(this, msg);
     }
 	
+	public void focusUsername() {
+		txtDangNhap.selectAll();
+		txtDangNhap.requestFocus();
+	}
 	
-	
+	public void focusPassword() {
+		txtMatKhau.selectAll();
+		txtMatKhau.requestFocus();
+	}
 }

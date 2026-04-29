@@ -32,12 +32,12 @@ public class LoginController implements ActionListener {
 		// Kieemr tra lỗi rỗng
 		if (userName.isEmpty()) {
 			JOptionPane.showMessageDialog(loginDialog, "Tên đăng nhập không được rỗng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-			focusAndSelectField("txtDangNhap");
+			loginDialog.focusUsername();
 			return;
 		}
 		if (pass.isEmpty()) {
 			JOptionPane.showMessageDialog(loginDialog, "Mật khẩu không được rỗng!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-			focusAndSelectField("txtMatKhau");
+			loginDialog.focusPassword();
 			return;
 		}
 		
@@ -57,27 +57,13 @@ public class LoginController implements ActionListener {
 			String errorMsg = ex.getMessage();
 			JOptionPane.showMessageDialog(loginDialog, errorMsg, "Lỗi đăng nhập", JOptionPane.ERROR_MESSAGE);
 			
-			if (errorMsg.equals("Tên đăng nhập không tồn tại!")) {
-				focusAndSelectField("txtDangNhap");
-			} else if (errorMsg.equals("Sai mật khẩu!")) {
-				focusAndSelectField("txtMatKhau");
+			if (errorMsg.equals("Tên đăng nhập không tồn tại! Vui lòng thử lại!")) {
+				loginDialog.focusUsername();
+			} else if (errorMsg.equals("Sai mật khẩu! Vui lòng thử lại!")) {
+				loginDialog.focusPassword();
 			}
 		}
 	}
 	
-	/**
-	 * Hàm hỗ trợ lấy field từ LoginDialog (bằng Reflection) 
-	 * để gọi selectAll() và requestFocus() mà không cần sửa code của LoginDialog.
-	 */
-	private void focusAndSelectField(String fieldName) {
-		try {
-			java.lang.reflect.Field field = loginDialog.getClass().getDeclaredField(fieldName);
-			field.setAccessible(true);
-			JTextField textField = (JTextField) field.get(loginDialog);
-			textField.selectAll();
-			textField.requestFocus();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
+
 }
