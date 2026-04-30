@@ -123,6 +123,13 @@ public class MainFrame extends JFrame{
     
     // 3. Hàm này gắn sự kiện cho csac nút nè nhá các em
     public void addMenuAction(ActionListener actionListener) {
+    	if (actionListener == null) {
+            System.out.println("LỖI: actionListener truyền vào bị NULL!");
+            return;
+        }
+        System.out.println("Đang kết nối các nút bấm với Controller...");
+        
+        
     	btnPOS.addActionListener(actionListener);
         btnInvoice.addActionListener(actionListener);
         btnMenu.addActionListener(actionListener);
@@ -130,6 +137,7 @@ public class MainFrame extends JFrame{
         btnStats.addActionListener(actionListener);
         btnLogout.addActionListener(actionListener);
     }
+    
 	
 	
 	

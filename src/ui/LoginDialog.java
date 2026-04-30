@@ -15,10 +15,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import ui.custom_ui.RoundedButton;
-import ui.custom_ui.RoundedPanel;
-import ui.custom_ui.RoundedPasswordField;
-import ui.custom_ui.RoundedTextField;
+import custom_ui.RoundedButton;
+import custom_ui.RoundedPanel;
+import custom_ui.RoundedPasswordField;
+import custom_ui.RoundedTextField;
 
 
 public class LoginDialog extends JFrame{
@@ -117,6 +117,7 @@ public class LoginDialog extends JFrame{
 		btnDangNhap.setIcon(scaledIcon);
 		btnDangNhap.setIconTextGap(2);
 		mainPanel.add(btnDangNhap,BorderLayout.SOUTH);
+		
 		
 	}
 	

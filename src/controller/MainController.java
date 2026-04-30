@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import ui.LoginDialog;
 import ui.MainFrame;
 import ui.POS;
-import utils.Auth;
 
 public class MainController implements ActionListener{
 	private MainFrame mainFrame;
@@ -43,7 +42,7 @@ public class MainController implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         // Lấy cái chuỗi command mình đã set trong View
         String command = e.getActionCommand(); 
-
+        System.out.println("Controller nhận được lệnh: " + command);
         switch (command) {
             case "POS":
             	// show csai panel anh em viet a nha
@@ -71,16 +70,14 @@ public class MainController implements ActionListener{
     }
 	
 	private void logout() {
-        // xoa nguoi dang nhap di
-		Auth.clear();
+		System.out.println("Đăng xuất tài khoản!!");
 		// tat cai mainFtame
         mainFrame.dispose();
         
         // hien thi cai mang hinh fdang nhap ra
         
         // CÁI NÀY VƯƠNG LÀM NÊN VƯƠNG COI RỒI GẮN VÔ NHA
-//        LoginDialog loginView = new LoginDialog();
-//        new LoginController();
-//        loginView.setVisible(true);
+        LoginDialog loginView = new LoginDialog();
+        loginView.setVisible(true);
     }
 }
