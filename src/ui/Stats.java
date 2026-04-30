@@ -9,9 +9,11 @@ public class Stats extends JPanel{
 	public Stats() {
 		init();
 	}
-
 	private void init() {
 		setLayout(new BorderLayout());
 		setBackground(Color.decode(""));
 	}
 }
+
+}
+

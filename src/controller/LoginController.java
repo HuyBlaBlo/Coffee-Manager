@@ -3,7 +3,7 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+
 
 import dao.TaiKhoan_DAO;
 import entity.NhanVien;
@@ -41,28 +41,30 @@ public class LoginController implements ActionListener {
 			return;
 		}
 		
-		// 2. Gọi hàm dangNhap từ TaiKhoan_DAO
-		try {
-			NhanVien nv = taiKhoanDAO.dangNhap(userName, pass);
-			
-			// 3. Nếu thành công:
-			Auth.user = nv;
-			JOptionPane.showMessageDialog(loginDialog, "Đăng nhập thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-			MainFrame mainFrame = new MainFrame();
-			mainFrame.setVisible(true);
+		int result = taiKhoanDAO.checkPassWord(userName, pass);
+		if(result==0) {
+			loginDialog.showMessage("Đăng nhập thành công!!"); 
 			loginDialog.dispose();
-			
-			
-		} catch (Exception ex) {
-			String errorMsg = ex.getMessage();
-			JOptionPane.showMessageDialog(loginDialog, errorMsg, "Lỗi đăng nhập", JOptionPane.ERROR_MESSAGE);
-			
-			if (errorMsg.equals("Tên đăng nhập không tồn tại! Vui lòng thử lại!")) {
-				loginDialog.focusUsername();
-			} else if (errorMsg.equals("Sai mật khẩu! Vui lòng thử lại!")) {
-				loginDialog.focusPassword();
-			}
+			MainFrame mainFrame = new MainFrame();
+	        new MainController(mainFrame); 
+	        mainFrame.setVisible(true);
+			return;
 		}
+		else if(result==1) {
+			loginDialog.showMessage("Sai tên đăng nhập. Vui lòng thử lại!!");
+			loginDialog.focusUsername();
+			return;
+		}
+		else if(result==2){
+			loginDialog.showMessage("Sai mật khẩu. Vui lòng thử lại!!");
+			loginDialog.focusPassword();
+			return;
+		}
+		else {
+			loginDialog.showMessage("Lỗi kết nối CSDL");
+			return;
+		}
+		
 	}
 	
 

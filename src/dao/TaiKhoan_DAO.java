@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import entity.NhanVien;
 import entity.TaiKhoan;
 import utils.ConnectDB;
 
@@ -35,44 +34,35 @@ public class TaiKhoan_DAO {
 		return dstaikhoan;
 	}
 	
-    public NhanVien dangNhap(String tenDN, String matKhau) throws Exception {
-        String sql = "SELECT tk.TenDangNhap, tk.MatKhau, ns.MaNhanSu, ns.TenNV, ns.ChucVu " +
-                     "FROM TaiKhoan tk " +
-                     "JOIN NhanSu ns ON tk.MaTK = ns.MaTK " +
-                     "WHERE tk.TenDangNhap = ?";
-        
-        // Lấy connection từ class ConnectDB
-        Connection con = ConnectDB.getConnection();
-        
-        // nếu không kết nối được thử kết lối lại
-        if (con == null || con.isClosed()) {
-            ConnectDB.getInstance().connect();
-            con = ConnectDB.getConnection();
-        }
-        
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-            
-            pstmt.setString(1, tenDN);
-            
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    String pass = rs.getString("MatKhau");
-                    
-                    if (!pass.equals(matKhau)) {
-                        throw new Exception("Sai mật khẩu!");
-                    }
-                    
-                    // Khởi tạo đối tượng NhanVien nếu đăng nhập thành công
-                    NhanVien nv = new NhanVien();
-                    nv.setMaNV(rs.getString("MaNhanSu"));
-                    nv.setTenNV(rs.getString("TenNV"));
-                    nv.setChucVu(rs.getString("ChucVu"));
-                    
-                    return nv;
-                } else {
-                    throw new Exception("Tên đăng nhập không tồn tại!");
-                }
-            }
-        }
+    public int checkPassWord(String userName,String pass) {
+    	try {
+	        ConnectDB.getInstance().connect(); 
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return 3; // 3-> Lỗi kết nối CSDL
+	    }
+    	
+    	ArrayList<TaiKhoan> list = this.getalltbTaiKhoan();
+    	for(TaiKhoan tk : list) {
+    		//Đúng tên đăng nhập
+    		if(tk.getTenDangNhap().equals(userName)) {
+    			// Đúng mật khẩu
+    			if(tk.getMatKhau().equals(pass)) {
+    				System.out.println("Đăng nhập thành công!!");
+    			    return 0; //0-> đăng nhập thành công
+    			}
+    			// Sai mật khẩu
+    			else {
+    				System.out.println("Sai mật khẩu. Vui lòng thử lại!!");
+    				return 2; //2-> sai mật khẩu
+    			}
+    		}
+    	}
+    	
+    	// Sai tên đăng nhập
+    	System.out.println("Sai tên đăng nhập. Vui lòng thử lại!!");
+		return 1; //1-> sai tên đăng nhập
     }
+	
 }
+

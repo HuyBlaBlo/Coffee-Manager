@@ -17,5 +17,7 @@ public class App {
 		LoginDialog loginDialog = new LoginDialog();
 		new LoginController(loginDialog);
 		loginDialog.setVisible(true);
+		
+
 	}
 }
