@@ -4,16 +4,21 @@ public class NhanVien {
     private String maNV;
     private String tenNV;
     private String chucVu;
-    private String trangThai;
+    private String caLamViec;
+    private String soDienThoai;
+    private TaiKhoan maTK;
 
     public NhanVien() {}
 
-    public NhanVien(String maNV, String tenNV,String chucVu, String trangThai) {
-        this.maNV = maNV;
-        this.tenNV = tenNV;
-        this.chucVu = chucVu;
-        this.trangThai = trangThai;
-    }
+	public NhanVien(String maNV, String tenNV, String chucVu, String caLamViec, String soDienThoai, TaiKhoan maTK) {
+		
+		this.maNV = maNV;
+		this.tenNV = tenNV;
+		this.chucVu = chucVu;
+		this.caLamViec = caLamViec;
+		this.soDienThoai = soDienThoai;
+		this.maTK = maTK;
+	}
 
 	public String getMaNV() {
 		return maNV;
@@ -39,13 +44,38 @@ public class NhanVien {
 		this.chucVu = chucVu;
 	}
 
-	public String getTrangThai() {
-		return trangThai;
+	public String getCaLamViec() {
+		return caLamViec;
 	}
 
-	public void setTrangThai(String trangThai) {
-		this.trangThai = trangThai;
+	public void setCaLamViec(String caLamViec) {
+		this.caLamViec = caLamViec;
 	}
+
+	public String getSoDienThoai() {
+		return soDienThoai;
+	}
+
+	public void setSoDienThoai(String soDienThoai) {
+		this.soDienThoai = soDienThoai;
+	}
+
+	public TaiKhoan getMaTK() {
+		return maTK;
+	}
+
+	public void setMaTK(TaiKhoan maTK) {
+		this.maTK = maTK;
+	}
+
+	@Override
+	public String toString() {
+		return "NhanVien [maNV=" + maNV + ", tenNV=" + tenNV + ", chucVu=" + chucVu + ", caLamViec=" + caLamViec
+				+ ", soDienThoai=" + soDienThoai + ", maTK=" + maTK + "]";
+	}
+
+
+	
 
     
 }
