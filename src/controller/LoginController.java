@@ -6,9 +6,10 @@ import javax.swing.JOptionPane;
 
 
 import dao.TaiKhoan_DAO;
-
+import entity.NhanVien;
 import ui.LoginDialog;
 import ui.MainFrame;
+import utils.Auth;
 
 
 public class LoginController implements ActionListener {
@@ -28,6 +29,10 @@ public class LoginController implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String userName = loginDialog.getUsername();
 		String pass = loginDialog.getPassword();
+		
+		// Lấy tên người đăng nhập vào hệ thống
+		NhanVien nvLogin = taiKhoanDAO.checkLogin(userName, pass);
+		Auth.user = nvLogin;
 		
 		// Kieemr tra lỗi rỗng
 		if (userName.isEmpty()) {

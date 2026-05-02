@@ -60,7 +60,7 @@ public class MainFrame extends JFrame{
 		//nguoi dunng
 		// lay ten nguoi dung ra
 		String userName = (Auth.user != null) ? Auth.user.getTenNV() : "Quản lý";
-		JLabel lblUser = new JLabel("Xin chào" + userName,JLabel.CENTER);
+		JLabel lblUser = new JLabel("Xin chào " + userName,JLabel.CENTER);
 		lblUser.setForeground(Color.decode("#f5e6d3")); //mau trang
         lblUser.setFont(new Font("Arial", Font.ITALIC, 18));
         lblUser.setPreferredSize(new Dimension(250, 30));
