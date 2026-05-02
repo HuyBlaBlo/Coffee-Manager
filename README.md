@@ -71,25 +71,3 @@ src/
  ├── com.coffee.utils/        # Các hàm dùng chung (JdbcHelper, ExcelHelper, Auth...)
  └── MainApp.java             # Entry point khởi chạy phần mềm
 
-🚀 Hướng Dẫn Cài Đặt (Installation)
-
-Bước 1: Clone repository này về máy:
-Bash
-
-git clone [https://github.com/HuyBlaBlo/Coffee-Manager.git](https://github.com/HuyBlaBlo/Coffee-Manager.git)
-
-Bước 2: Mở dự án bằng Eclipse / IntelliJ IDEA. Đảm bảo các file .jar trong thư mục lib đã được Add vào Build Path.
-
-Bước 3: Cấu hình Database
-
-    Mở file com.coffee.utils.JdbcHelper (hoặc nơi chứa chuỗi kết nối).
-
-    Thay đổi USER và PASSWORD cho phù hợp với SQL Server của bạn.
-
-    Lưu ý: Không cần tạo thủ công Database, phần mềm sẽ tự động xây dựng qua class DatabaseSetup.java.
-
-Bước 4: Chạy file MainApp.java. Đăng nhập với tài khoản mặc định:
-
-    Tên đăng nhập: admin
-
-    Mật khẩu: 123
