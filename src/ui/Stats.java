@@ -9,10 +9,12 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionListener;
+import java.util.Date;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,11 +22,20 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.RingPlot;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+
 import com.toedter.calendar.JDateChooser;
 
 import custom_ui.RoundedButton;
 import custom_ui.RoundedLabel;
-import custom_ui.RoundedPanel;
 import custom_ui.SimpleRoundedPanel;
 
 public class Stats extends JPanel{
@@ -39,7 +50,6 @@ public class Stats extends JPanel{
     private RoundedButton btnExport;
     
 	private JLabel lblRevenue;
-	private JLabel lblRevenueGrowth;
 	private JLabel lblProfit;
 	private JLabel lblMargin;
 	private CardLayout centerCard;
@@ -118,6 +128,7 @@ public class Stats extends JPanel{
 		filterButton = new RoundedButton("Lọc", 20, Color.BLACK);
 		filterButton.setForeground(Color.WHITE);
 		filterButton.setPreferredSize(new Dimension(80,30));
+		filterButton.setActionCommand("FILTER");
 		
 		pnlDateFilter.add(calenderIcon);
 		pnlDateFilter.add(dateFrom);
@@ -136,6 +147,11 @@ public class Stats extends JPanel{
         btnMonth = createToolbarButton("Tháng này", false);
         btnYear = createToolbarButton("Năm nay", false);
         btnExport = createToolbarButton("Xuất Excel", true);
+        
+        btnToday.setActionCommand("TODAY");
+        btnWeek.setActionCommand("WEEK");
+        btnMonth.setActionCommand("MONTH");
+        btnYear.setActionCommand("YEAR");
         
         pnlButton.add(btnToday);
         pnlButton.add(btnWeek);
@@ -310,7 +326,7 @@ public class Stats extends JPanel{
     	centerCard = new CardLayout();
     	pnlCenterCard = new JPanel(centerCard);
     	pnlCenterCard.setOpaque(false);
-    	pnlCenterCard.setBorder(new EmptyBorder(15, 0, 0, 0));
+    	pnlCenterCard.setBorder(new EmptyBorder(15, 15, 15, 15));
     	
     	// khung ngày hôm nay 
     	SimpleRoundedPanel pnlTodayView = new SimpleRoundedPanel(20, Color.WHITE, Color.decode("#E5E7EB"));
@@ -373,6 +389,153 @@ public class Stats extends JPanel{
         // mặc định vô là hiện thoogns kê ngày trước 
         centerCard.show(pnlCenterCard, "CARD_TODAY");
     	return pnlCenterCard;
+    }
+    
+    //=======================================================================================s
+    // xử lí vẽ biểu đồ
+
+    public void updateCharts(double[] kpis,Map<String, Integer> productSales, Map<java.sql.Date, Double> revenueData, boolean isToday) {
+        // 1. Cập nhật số liệu vào các nhãn KPI
+        this.lblRevenue.setText(String.format("%,.0f đ", kpis[0]));
+        this.lblProfit.setText(String.format("%,.0f đ", kpis[2]));
+
+        // 2. Lật trang CardLayout (Hôm nay hoặc Nhiều ngày)
+        this.centerCard.show(pnlCenterCard, isToday ? "CARD_TODAY" : "CARD_RANGE");
+
+        // 3. Gọi các hàm vẽ biểu đồ (Sử dụng dữ liệu vừa nhận được)
+        if (isToday) {
+            JPanel pnlToday = (JPanel) pnlCenterCard.getComponent(0);
+            renderChart(pnlToday, BorderLayout.CENTER, createDonutChart(productSales));
+        } else {
+            JPanel pnlRange = (JPanel) pnlCenterCard.getComponent(1);
+            renderChart((JPanel)pnlRange.getComponent(0), BorderLayout.CENTER, createBarChart(revenueData));
+            renderChart((JPanel)pnlRange.getComponent(1), BorderLayout.CENTER, createDonutChart(productSales));
+        }
+    }
+    
+    private void renderChart(JPanel container, String position, JFreeChart chart) {
+        BorderLayout layout = (BorderLayout) container.getLayout();
+        java.awt.Component old = layout.getLayoutComponent(position);
+        if (old != null) container.remove(old);
+
+        org.jfree.chart.ChartPanel cp = new org.jfree.chart.ChartPanel(chart);
+        cp.setOpaque(false);
+        cp.setBackground(new Color(0,0,0,0)); // Trong suốt cho tiệp màu nền
+        
+        container.add(cp, position);
+        container.revalidate();
+        container.repaint();
+    }
+    
+    private JFreeChart createDonutChart(Map<String, Integer> data) {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        for (Map.Entry<String, Integer> entry : data.entrySet()) {
+            dataset.setValue(entry.getKey(), entry.getValue());
+        }
+
+        JFreeChart chart = ChartFactory.createRingChart(
+                "", dataset, false, false, false);
+        
+        chart.setBackgroundPaint(new Color(0, 0, 0, 0)); 
+        RingPlot plot = (RingPlot) chart.getPlot();
+        plot.setBackgroundPaint(new Color(0, 0, 0, 0));
+        
+        // Bỏ labels và shadow theo yêu cầu
+        plot.setOutlineVisible(false);
+        plot.setLabelGenerator(null); 
+        plot.setShadowPaint(null);    
+        plot.setSectionDepth(0.35);   // Lỗ hổng ở giữa cho đẹp
+
+        // Bảng màu yêu cầu
+        Color[] colors = {
+            Color.decode("#2d1a10"), Color.decode("#c17f3e"), Color.decode("#e8a842")
+        };
+        
+        int colorIdx = 0;
+        for (Object key : dataset.getKeys()) {
+            plot.setSectionPaint((Comparable<?>) key, colors[colorIdx % colors.length]);
+            colorIdx++;
+        }
+
+        return chart;
+    }
+    
+    private JFreeChart createBarChart(Map<java.sql.Date, Double> data) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (Map.Entry<java.sql.Date, Double> entry : data.entrySet()) {
+            String dateStr = new java.text.SimpleDateFormat("dd/MM").format(entry.getKey());
+            dataset.addValue(entry.getValue(), "DoanhThu", dateStr);
+        }
+
+        JFreeChart chart = ChartFactory.createBarChart(
+                "", "", "", dataset, PlotOrientation.VERTICAL, false, false, false);
+
+        chart.setBackgroundPaint(new Color(0, 0, 0, 0));
+        CategoryPlot plot = chart.getCategoryPlot();
+        plot.setBackgroundPaint(new Color(0, 0, 0, 0));
+        plot.setOutlineVisible(false);
+        
+        // Bỏ gridlines để giao diện phẳng
+        plot.setRangeGridlinesVisible(false); 
+        plot.setDomainGridlinesVisible(false);
+
+        BarRenderer renderer = (BarRenderer) plot.getRenderer();
+        // Màu cột: #c17f3e
+        renderer.setSeriesPaint(0, Color.decode("#c17f3e")); 
+        renderer.setBarPainter(new StandardBarPainter()); // Bỏ gradient, làm phẳng
+        renderer.setShadowVisible(false);                 // Bỏ shadow cột
+
+        // Chỉnh màu trục
+        plot.getDomainAxis().setAxisLinePaint(Color.decode("#E5E7EB"));
+        plot.getDomainAxis().setTickMarkPaint(Color.decode("#E5E7EB"));
+        plot.getRangeAxis().setAxisLinePaint(Color.decode("#E5E7EB"));
+        plot.getRangeAxis().setTickMarkPaint(Color.decode("#E5E7EB"));
+
+        return chart;
+    }
+    
+    
+    // actionlistener
+    public void addTabListener(ActionListener actionListener) {
+        btnToday.addActionListener(actionListener);
+        btnWeek.addActionListener(actionListener);
+        btnMonth.addActionListener(actionListener);
+        btnYear.addActionListener(actionListener);
+        filterButton.addActionListener(actionListener);
+    }
+    
+    public void setTabActiveByCommand(String cmd) {
+        if (cmd == null) {
+        	setActiveTab(null);
+        	return; 
+        }
+        
+        switch (cmd) {
+            case "TODAY": 
+            	setActiveTab(btnToday); 
+            	break;
+            case "WEEK": 
+            	setActiveTab(btnWeek); 
+            	break;
+            case "MONTH": 
+            	setActiveTab(btnMonth); 
+            	break;
+            case "YEAR": 
+            	setActiveTab(btnYear); 
+            	break;
+        }
+    }
+    
+    // set ngày tháng cho dateFrom và dateTo
+    public Date getStartDate() {
+    	return dateFrom.getDate(); 
+    }
+    public Date getEndDate() {
+    	return dateTo.getDate(); 
+    }
+    public void setDateRange(Date start,Date end) {
+        dateFrom.setDate(start);
+        dateTo.setDate(end);
     }
 }
 

@@ -6,10 +6,10 @@ import javax.swing.JOptionPane;
 
 
 import dao.TaiKhoan_DAO;
-import entity.NhanVien;
+
 import ui.LoginDialog;
 import ui.MainFrame;
-import utils.Auth;
+
 
 public class LoginController implements ActionListener {
 	private LoginDialog loginDialog;

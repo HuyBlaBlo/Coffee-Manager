@@ -3,6 +3,7 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import dao.Stats_DAO;
 import ui.LoginDialog;
 import ui.MainFrame;
 import ui.POS;
@@ -35,6 +36,8 @@ public class MainController implements ActionListener{
 		// tuowng tự cho các csai panel khác 
 		
 		Stats statsView = new Stats();
+		Stats_DAO stats_DAO = new Stats_DAO();
+		new StatsController(statsView, stats_DAO);
 		mainFrame.addSubPanel(statsView, "Stats");
 		
 		
