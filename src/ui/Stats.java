@@ -181,10 +181,10 @@ public class Stats extends JPanel{
 	    
 	    for(RoundedButton listButton : tabButton) {
 	        if(listButton == activeButton) {
-	            // Nút được chọn -> Tô màu nâu, chữ trắng
+	            // Nút được chọn thif Tô màu nâu, chữ trắng
 	            listButton.setTabColor(Color.decode("#c17f3e"), Color.WHITE);
 	        } else {
-	            // Nút khoong được chọn -> trả về nền trắng, chữ xám đậm
+	            // Nút khoong được chọn thì trả về nền trắng, chữ xám đậm
 
 	            listButton.setTabColor(Color.WHITE, Color.DARK_GRAY);
 	        }
@@ -211,7 +211,7 @@ public class Stats extends JPanel{
     }
 
     private JPanel createKpiArea() {
-        // Tăng padding để khu vực KPI cách lề một chút cho đẹp
+
         JPanel pnlKpi = new JPanel(new GridLayout(1, 4, 15, 0));
         pnlKpi.setOpaque(false);
         pnlKpi.setBorder(new EmptyBorder(5, 15, 15, 15));
@@ -220,79 +220,75 @@ public class Stats extends JPanel{
         Color borderGray = Color.decode("#E5E7EB");
         Color textDark = Color.decode("#2D1A10");
 
-        // 1. CARD TỔNG DOANH THU
+        //CARD TỔNG DOANH THU
         lblRevenue = createLargeLabel("#2D1A10");
         lblRevenue.setText("1.152.000 đ");
         JPanel subRev = createBadgeSubLabel("↑ 10.3%", "SO VỚI HÔM QUA");
-        ImageIcon icRev = getIcon("/images/dollar.png", 40, 40); // Đổi tên ảnh
+        ImageIcon icRev = getIcon("/images/dollar.png", 40, 40); 
         pnlKpi.add(createKpiCard("TỔNG DOANH THU", lblRevenue, subRev, bgWhite, textDark, borderGray, icRev));
 
-        // 2. CARD SỐ ĐƠN HÀNG
+        //CARD SỐ ĐƠN HÀNG
         JLabel lblOrd = createLargeLabel("#2D1A10");
         lblOrd.setText("11");
         JLabel subOrd = createSmallLabel("<html><span style='color:#9CA3AF;'>Bình quân: </span><span style='color:#C17F3E; font-weight:bold;'>104.727 đ/đơn</span></html>");
-        ImageIcon icOrd = getIcon("/images/bag.png", 40, 40); // Đổi tên ảnh
+        ImageIcon icOrd = getIcon("/images/bag.png", 40, 40);
         pnlKpi.add(createKpiCard("SỐ ĐƠN HÀNG", lblOrd, subOrd, bgWhite, textDark, borderGray, icOrd));
 
-        // 3. CARD SP ĐÃ BÁN
+        // CARD SP ĐÃ BÁN
         JLabel lblItem = createLargeLabel("#2D1A10");
         lblItem.setText("31");
         JLabel subItem = createSmallLabel("<html><span style='color:#9CA3AF;'>Món chạy nhất: </span><span style='color:#C17F3E; font-weight:bold;'>Bánh Tiramisu</span></html>");
-        ImageIcon icItem = getIcon("/images/box.png", 40, 40); // Đổi tên ảnh
+        ImageIcon icItem = getIcon("/images/box.png", 40, 40); 
         pnlKpi.add(createKpiCard("SP ĐÃ BÁN", lblItem, subItem, bgWhite, textDark, borderGray, icItem));
 
-        // 4. CARD LỢI NHUẬN GỘP
+        // CARD LỢI NHUẬN GỘP
         lblProfit = createLargeLabel("#E8A842"); 
         lblProfit.setText("648.000 đ");
         String subText4 = "<html><span style='color:#D1D5DB;'>Biên lợi nhuận: </span><span style='color:white; font-weight:bold;'>56.3%</span></html>";
         lblMargin = createSmallLabel(subText4);
-        ImageIcon iconProfit = getIcon("/images/trend_icon.png", 40, 40); // Đổi tên ảnh
+        ImageIcon iconProfit = getIcon("/images/trend_icon.png", 40, 40); 
         pnlKpi.add(createKpiCard("LỢI NHUẬN GỘP", lblProfit, lblMargin, Color.decode("#2D1A10"), Color.WHITE, Color.decode("#2D1A10"), iconProfit));
 
         return pnlKpi;
     }
 	
-	// 1. Label cho số to (Chỉ cần chỉnh font to lên một chút cho hoành tráng)
+
     private JLabel createLargeLabel(String hexColor) {
         JLabel lbl = new JLabel("0"); 
-        lbl.setFont(new Font("SansSerif", Font.BOLD, 28)); // Đổi thành size 28 cho đúng chuẩn KPI
+        lbl.setFont(new Font("SansSerif", Font.BOLD, 28)); 
         lbl.setForeground(Color.decode(hexColor));
         return lbl;
     }
 
-    // 2. MẸO MENTOR: Không truyền màu nữa, truyền thẳng một đoạn Text.
-    // Tui sẽ chỉ bro cách dùng Text đặc biệt để tô nhiều màu trong cùng 1 Label ở phần dưới.
+    // label nhỏ
     private JLabel createSmallLabel(String text) {
         JLabel lbl = new JLabel(text);
         lbl.setFont(new Font("SansSerif", Font.PLAIN, 13));
         return lbl;
     }
 
-    // 3. Khung Card (Đổi thành SimpleRoundedPanel và chia Layout Trái-Phải)
-    private SimpleRoundedPanel createKpiCard(String title, JLabel valueLabel, JComponent subComponent, Color bgColor, Color titleColor, Color borderColor, ImageIcon icon) {
-        // Thay JPanel thường bằng khung bo tròn của bro
-        SimpleRoundedPanel card = new SimpleRoundedPanel(15, bgColor, borderColor);
-        card.setLayout(new BorderLayout(10, 10)); // Khoảng cách giữa cụm Chữ và Icon
-        card.setBorder(new EmptyBorder(15, 15, 15, 15)); // Padding lùi vào trong
 
-        // --- CỤM BÊN TRÁI (Chứa Title, Giá trị, và Sub-label) ---
-        // Dùng GridLayout 3 hàng, 1 cột để tụi nó tự động xếp chồng lên nhau
+    private SimpleRoundedPanel createKpiCard(String title, JLabel valueLabel, JComponent subComponent, Color bgColor, Color titleColor, Color borderColor, ImageIcon icon) {
+
+        SimpleRoundedPanel card = new SimpleRoundedPanel(15, bgColor, borderColor);
+        card.setLayout(new BorderLayout(10, 10)); 
+        card.setBorder(new EmptyBorder(15, 15, 15, 15));
+
+        // nửa bên trái chứa title, giá trị, các sublabel
         JPanel pnlLeft = new JPanel(new GridLayout(3, 1, 0, 5));
-        pnlLeft.setOpaque(false); // Trong suốt để không che màu nền của thẻ
+        pnlLeft.setOpaque(false); 
 
         JLabel lblTitle = new JLabel(title);
-        lblTitle.setFont(new Font("SansSerif", Font.BOLD, 13));
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 13));
         lblTitle.setForeground(titleColor);
 
         pnlLeft.add(lblTitle);
         pnlLeft.add(valueLabel);
         pnlLeft.add(subComponent);
 
-        // --- CỤM BÊN PHẢI (Chứa Icon) ---
         JLabel lblIcon = new JLabel(icon);
-        lblIcon.setVerticalAlignment(SwingConstants.TOP); // Neo cái icon lên góc cao nhất
+        lblIcon.setVerticalAlignment(SwingConstants.TOP);
 
-        // Ráp vào thẻ chính
         card.add(pnlLeft, BorderLayout.CENTER);
         card.add(lblIcon, BorderLayout.EAST);
 
