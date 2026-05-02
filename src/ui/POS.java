@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -53,6 +54,257 @@ public class POS extends JPanel {
 	private JButton btnCheckout;
 	private DefaultTableModel orderTableModel;
 	private JTable tblOrder;
+	private JButton btnBanking;
+	private JButton btnVi;
+	private JLabel lblStatusOrder;
+	
+	public JTextField getTxtTienDoanhThu() {
+		return txtTienDoanhThu;
+	}
+
+	public void setTxtTienDoanhThu(JTextField txtTienDoanhThu) {
+		this.txtTienDoanhThu = txtTienDoanhThu;
+	}
+
+	public JTextField getTxtDonHang() {
+		return txtDonHang;
+	}
+
+	public void setTxtDonHang(JTextField txtDonHang) {
+		this.txtDonHang = txtDonHang;
+	}
+
+	public JTextField getTxtTienLoiNhuan() {
+		return txtTienLoiNhuan;
+	}
+
+	public void setTxtTienLoiNhuan(JTextField txtTienLoiNhuan) {
+		this.txtTienLoiNhuan = txtTienLoiNhuan;
+	}
+
+	public JCheckBox getCbTaiCho() {
+		return cbTaiCho;
+	}
+
+	public void setCbTaiCho(JCheckBox cbTaiCho) {
+		this.cbTaiCho = cbTaiCho;
+	}
+
+	public JCheckBox getCbMangDi() {
+		return cbMangDi;
+	}
+
+	public void setCbMangDi(JCheckBox cbMangDi) {
+		this.cbMangDi = cbMangDi;
+	}
+
+	public JTextField getTxtTimMon() {
+		return txtTimMon;
+	}
+
+	public void setTxtTimMon(JTextField txtTimMon) {
+		this.txtTimMon = txtTimMon;
+	}
+
+	public JButton getBtnBan1() {
+		return btnBan1;
+	}
+
+	public void setBtnBan1(JButton btnBan1) {
+		this.btnBan1 = btnBan1;
+	}
+
+	public JButton getBtnBan2() {
+		return btnBan2;
+	}
+
+	public void setBtnBan2(JButton btnBan2) {
+		this.btnBan2 = btnBan2;
+	}
+
+	public JButton getBtnBan3() {
+		return btnBan3;
+	}
+
+	public void setBtnBan3(JButton btnBan3) {
+		this.btnBan3 = btnBan3;
+	}
+
+	public JButton getBtnBan4() {
+		return btnBan4;
+	}
+
+	public void setBtnBan4(JButton btnBan4) {
+		this.btnBan4 = btnBan4;
+	}
+
+	public JButton getBtnBan5() {
+		return btnBan5;
+	}
+
+	public void setBtnBan5(JButton btnBan5) {
+		this.btnBan5 = btnBan5;
+	}
+
+	public JButton getBtnBan6() {
+		return btnBan6;
+	}
+
+	public void setBtnBan6(JButton btnBan6) {
+		this.btnBan6 = btnBan6;
+	}
+
+	public JComboBox<String> getComboBoxDanhMuc() {
+		return comboBoxDanhMuc;
+	}
+
+	public void setComboBoxDanhMuc(JComboBox<String> comboBoxDanhMuc) {
+		this.comboBoxDanhMuc = comboBoxDanhMuc;
+	}
+
+	public JButton getBtnCaPheDen() {
+		return btnCaPheDen;
+	}
+
+	public void setBtnCaPheDen(JButton btnCaPheDen) {
+		this.btnCaPheDen = btnCaPheDen;
+	}
+
+	public JButton getBtnCaPheSua() {
+		return btnCaPheSua;
+	}
+
+	public void setBtnCaPheSua(JButton btnCaPheSua) {
+		this.btnCaPheSua = btnCaPheSua;
+	}
+
+	public JButton getBtnBacXiu() {
+		return btnBacXiu;
+	}
+
+	public void setBtnBacXiu(JButton btnBacXiu) {
+		this.btnBacXiu = btnBacXiu;
+	}
+
+	public JButton getBtnTraDao() {
+		return btnTraDao;
+	}
+
+	public void setBtnTraDao(JButton btnTraDao) {
+		this.btnTraDao = btnTraDao;
+	}
+
+	public JButton getBtnTraVai() {
+		return btnTraVai;
+	}
+
+	public void setBtnTraVai(JButton btnTraVai) {
+		this.btnTraVai = btnTraVai;
+	}
+
+	public JButton getBtnMatcha() {
+		return btnMatcha;
+	}
+
+	public void setBtnMatcha(JButton btnMatcha) {
+		this.btnMatcha = btnMatcha;
+	}
+
+	public JButton getBtnTiramisu() {
+		return btnTiramisu;
+	}
+
+	public void setBtnTiramisu(JButton btnTiramisu) {
+		this.btnTiramisu = btnTiramisu;
+	}
+
+	public JButton getBtnBanhSungTrau() {
+		return btnBanhSungTrau;
+	}
+
+	public void setBtnBanhSungTrau(JButton btnBanhSungTrau) {
+		this.btnBanhSungTrau = btnBanhSungTrau;
+	}
+
+	public JButton getBtnBanhDonut() {
+		return btnBanhDonut;
+	}
+
+	public void setBtnBanhDonut(JButton btnBanhDonut) {
+		this.btnBanhDonut = btnBanhDonut;
+	}
+
+	public JButton getBtnTimMon() {
+		return btnTimMon;
+	}
+
+	public void setBtnTimMon(JButton btnTimMon) {
+		this.btnTimMon = btnTimMon;
+	}
+
+	public JButton getBtnDelete() {
+		return btnDelete;
+	}
+
+	public void setBtnDelete(JButton btnDelete) {
+		this.btnDelete = btnDelete;
+	}
+
+	public JButton getBtnTienMat() {
+		return btnTienMat;
+	}
+
+	public void setBtnTienMat(JButton btnTienMat) {
+		this.btnTienMat = btnTienMat;
+	}
+
+	public JButton getBtnCheckout() {
+		return btnCheckout;
+	}
+
+	public void setBtnCheckout(JButton btnCheckout) {
+		this.btnCheckout = btnCheckout;
+	}
+
+	public DefaultTableModel getOrderTableModel() {
+		return orderTableModel;
+	}
+
+	public void setOrderTableModel(DefaultTableModel orderTableModel) {
+		this.orderTableModel = orderTableModel;
+	}
+
+	public JTable getTblOrder() {
+		return tblOrder;
+	}
+
+	public void setTblOrder(JTable tblOrder) {
+		this.tblOrder = tblOrder;
+	}
+
+	public JButton getBtnBanking() {
+		return btnBanking;
+	}
+
+	public void setBtnBanking(JButton btnBanking) {
+		this.btnBanking = btnBanking;
+	}
+
+	public JButton getBtnVi() {
+		return btnVi;
+	}
+
+	public void setBtnVi(JButton btnVi) {
+		this.btnVi = btnVi;
+	}
+
+	public JLabel getLblStatusOrder() {
+		return lblStatusOrder;
+	}
+
+	public void setLblStatusOrder(JLabel lblStatusOrder) {
+		this.lblStatusOrder = lblStatusOrder;
+	}
 
 	public POS() {
 		init();
@@ -412,7 +664,7 @@ public class POS extends JPanel {
         JLabel lblTitleOrder = new JLabel("Đơn hàng");
         lblTitleOrder.setFont(new Font("Arial", Font.BOLD, 18));
         
-        JLabel lblStatusOrder = new JLabel(" Chưa chọn bàn! ");
+        lblStatusOrder = new JLabel(" Chưa chọn bàn! ");
         lblStatusOrder.setOpaque(true);
         lblStatusOrder.setBackground(Color.decode("#FEEDDA")); // Nền cam nhạt
         lblStatusOrder.setForeground(Color.decode("#D27832")); // Chữ cam đậm
@@ -487,10 +739,10 @@ public class POS extends JPanel {
         btnTienMat.setBackground(Color.decode("#AF7341")); // Đang chọn -> Nền nâu
         btnTienMat.setForeground(Color.WHITE);
         
-        JButton btnBanking = new JButton("Banking");
+        btnBanking = new JButton("Banking");
         btnBanking.setBackground(Color.WHITE);
         
-        JButton btnVi = new JButton("Ví Điện Tử");
+        btnVi = new JButton("Ví Điện Tử");
         btnVi.setBackground(Color.WHITE);
 
         pMethodsOrder.add(btnTienMat);
@@ -533,5 +785,72 @@ public class POS extends JPanel {
 	    return new ImageIcon(img);
 	}
 
-} 
+	// 2. Tạo phương thức gán ActionListener từ Controller
+	public void addPOSListener(ActionListener listener) {
+	    // Gán command để phân biệt nút nào được bấm
+	    btnCaPheDen.setActionCommand("Món: Cà phê đen đá"); 
+	    btnCaPheDen.addActionListener(listener);
+	    btnCaPheSua.setActionCommand("Món: Cà phê sữa đá");
+	    btnCaPheSua.addActionListener(listener);
+	    btnBacXiu.setActionCommand("Món: Bạc xỉu");
+	    btnBacXiu.addActionListener(listener);
+	    btnTraDao.setActionCommand("Món: Trà đào");
+	    btnTraDao.addActionListener(listener);
+	    btnTraVai.setActionCommand("Món: Trà vải");
+	    btnTraVai.addActionListener(listener);
+	    btnMatcha.setActionCommand("Món: Matcha Latte");
+	    btnMatcha.addActionListener(listener);
+	    btnTiramisu.setActionCommand("Món: Tiramisu");
+	    btnTiramisu.addActionListener(listener);
+	    btnBanhSungTrau.setActionCommand("Món: Bánh sừng trâu");
+	    btnBanhSungTrau.addActionListener(listener);
+	    btnBanhDonut.setActionCommand("Món: Bánh Donut");
+	    btnBanhDonut.addActionListener(listener);
+	    btnBan1.setActionCommand("Bàn 1");
+	    btnBan1.addActionListener(listener);
+	    btnBan2.setActionCommand("Bàn 2");
+	    btnBan2.addActionListener(listener);
+	    btnBan3.setActionCommand("Bàn 3");
+	    btnBan3.addActionListener(listener);
+	    btnBan4.setActionCommand("Bàn 4");
+	    btnBan4.addActionListener(listener);
+	    btnBan5.setActionCommand("Bàn 5");
+	    btnBan5.addActionListener(listener);
+	    btnBan6.setActionCommand("Bàn 6");
+	    btnBan6.addActionListener(listener);
+	    
+	    btnDelete.setActionCommand("Xoa");
+	    btnDelete.addActionListener(listener);
+	    btnTienMat.setActionCommand("TienMat");
+	    btnTienMat.addActionListener(listener);
+	    btnTimMon.setActionCommand("TimMon");
+	    btnTimMon.addActionListener(listener);
+	    btnBanking.setActionCommand("Banking");
+	    btnBanking.addActionListener(listener);
+	    btnVi.setActionCommand("Vi");
+	    btnVi.addActionListener(listener);
+	    
+	    // Nút thanh toán
+	    btnCheckout.setActionCommand("ThanhToan");
+	    btnCheckout.addActionListener(listener);
+	    
+	    cbMangDi.setActionCommand("MangDi");
+	    cbMangDi.addActionListener(listener);
+	    cbTaiCho.setActionCommand("TaiCho");
+	    cbTaiCho.addActionListener(listener);
+	}
 
+	public void setTrangThaiDonHang(String text) {
+	    lblStatusOrder.setText(text);
+	}
+
+	public void setKichHoatBan(boolean isEnable) {
+	    btnBan1.setEnabled(isEnable);
+	    btnBan2.setEnabled(isEnable);
+	    btnBan3.setEnabled(isEnable);
+	    btnBan4.setEnabled(isEnable);
+	    btnBan5.setEnabled(isEnable);
+	    btnBan6.setEnabled(isEnable);
+	}
+	
+} 

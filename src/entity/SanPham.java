@@ -9,9 +9,12 @@ public class SanPham {
 
     public SanPham() {}
 
-    
+    public SanPham(String maSP) {
+		super();
+		this.maSP = maSP;
+	}
 
-    public SanPham(String maSP, String tenSP, double giaVon, double giaBan, DanhMuc danhMuc) {
+	public SanPham(String maSP, String tenSP, double giaVon, double giaBan, DanhMuc danhMuc) {
 		this.maSP = maSP;
 		this.tenSP = tenSP;
 		this.giaVon = giaVon;

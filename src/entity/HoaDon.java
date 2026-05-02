@@ -12,8 +12,13 @@ public class HoaDon {
     private double tongTien;
 
     public HoaDon() {}
+    
+    public HoaDon(String maHD) {
+		super();
+		this.maHD = maHD;
+	}
 
-    public HoaDon(String maHD, Date thoiGianTao, String ban, NhanVien maNV, String phuongThucTT, String trangThai,
+	public HoaDon(String maHD, Date thoiGianTao, String ban, NhanVien maNV, String phuongThucTT, String trangThai,
 			double tongTien) {
 		this.maHD = maHD;
 		this.thoiGianTao = thoiGianTao;

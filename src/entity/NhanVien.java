@@ -10,6 +10,11 @@ public class NhanVien {
 
     public NhanVien() {}
 
+	public NhanVien(String maNV) {
+		super();
+		this.maNV = maNV;
+	}
+
 	public NhanVien(String maNV, String tenNV, String chucVu, String caLamViec, String soDienThoai, TaiKhoan maTK) {
 		
 		this.maNV = maNV;

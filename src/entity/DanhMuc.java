@@ -6,6 +6,11 @@ public class DanhMuc {
 
     public DanhMuc() {}
 
+    public DanhMuc(String maDM) {
+    	super();
+    	this.maDM = maDM;
+    }
+    
     public DanhMuc(String maDM, String tenDM) {
         this.maDM = maDM;
         this.tenDM = tenDM;
