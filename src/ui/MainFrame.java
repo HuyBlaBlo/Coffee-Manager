@@ -137,8 +137,4 @@ public class MainFrame extends JFrame{
         btnStats.addActionListener(actionListener);
         btnLogout.addActionListener(actionListener);
     }
-    
-	
-	
-	
 }

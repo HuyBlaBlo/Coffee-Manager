@@ -61,6 +61,15 @@ public class RoundedButton extends JButton {
         g2.dispose();
         super.paintComponent(g);
     }
+    //hàm hổ trợ làm nút đổi màu khi chọn 
+    public void setTabColor(Color newBgColor, Color newFgColor) {
+        this.colorNormal = newBgColor;
+        this.colorHover = newBgColor.darker(); 
+        this.colorPressed = newBgColor.darker().darker();
+        
+        setBackground(this.colorNormal);
+        setForeground(newFgColor);
+    }
 }
 
 

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import ui.LoginDialog;
 import ui.MainFrame;
 import ui.POS;
+import ui.Stats;
 
 public class MainController implements ActionListener{
 	private MainFrame mainFrame;
@@ -32,6 +33,9 @@ public class MainController implements ActionListener{
 		mainFrame.addSubPanel(posView, "POS");
 		mainFrame.showCard("POS");
 		// tuowng tự cho các csai panel khác 
+		
+		Stats statsView = new Stats();
+		mainFrame.addSubPanel(statsView, "Stats");
 		
 		
 	}
@@ -78,6 +82,7 @@ public class MainController implements ActionListener{
         
         // CÁI NÀY VƯƠNG LÀM NÊN VƯƠNG COI RỒI GẮN VÔ NHA
         LoginDialog loginView = new LoginDialog();
+        new LoginController(loginView);
         loginView.setVisible(true);
     }
 }
