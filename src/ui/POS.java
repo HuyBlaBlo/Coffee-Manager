@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -9,7 +10,10 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.util.EventObject;
 
+import javax.swing.AbstractCellEditor;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
@@ -22,8 +26,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 public class POS extends JPanel {
 
 	private JTextField txtTienDoanhThu;
@@ -57,6 +64,7 @@ public class POS extends JPanel {
 	private JButton btnBanking;
 	private JButton btnVi;
 	private JLabel lblStatusOrder;
+	private JLabel lblTotalValue;
 	
 	public JTextField getTxtTienDoanhThu() {
 		return txtTienDoanhThu;
@@ -336,7 +344,9 @@ public class POS extends JPanel {
 	
 	// 1. TẠO HEADER
 	public JPanel createHeader() {
+		//tạo panel để chứa phần header
 		JPanel pHeader = new JPanel();
+		//tạo box để thêm các phần tử
 		Box boxHeader = Box.createHorizontalBox();
 		boxHeader.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		boxHeader.setOpaque(true);
@@ -345,6 +355,7 @@ public class POS extends JPanel {
 		Box boxInfoHeader = Box.createHorizontalBox();
 		Box boxUser = Box.createHorizontalBox();
 		
+		//Tiêu đề của các phàn tử
 		JLabel lblTitle = new JLabel("Bán Hàng (POS)");
 		lblTitle.setFont(new Font("Arial", Font.BOLD, 18));
 		JLabel lblToday = new JLabel("Hôm nay:");
@@ -353,6 +364,7 @@ public class POS extends JPanel {
 		JLabel lblLoiNhuan = new JLabel("Lợi nhuận: ");
 		JLabel lblThoiGian = new JLabel("Thời gian");
 
+		//tạo các ô text để lấy dữ liệu từ DB đem lên gán cho dễ
 		txtTienDoanhThu = new JTextField(10);
 		txtDonHang = new JTextField(4);
 		txtTienLoiNhuan = new JTextField(10);
@@ -404,6 +416,7 @@ public class POS extends JPanel {
 		pTacVu.setBackground(Color.decode("#e3e3e3"));
 		cbTaiCho = new JCheckBox("Tại chỗ");
 		cbTaiCho.setBackground(Color.decode("#e3e3e3"));
+		cbTaiCho.setSelected(true);
 		cbMangDi = new JCheckBox("Mang đi");
 		cbMangDi.setBackground(Color.decode("#e3e3e3"));
 		ButtonGroup group = new ButtonGroup();
@@ -677,10 +690,10 @@ public class POS extends JPanel {
         pTitleOrder.add(lblTitleOrder);
         pTitleOrder.add(pStatusOrder);
 
-        btnDelete = new JButton("Xóa");
-        btnDelete.setBackground(Color.decode("#ff4d4d")); // Nút xóa màu đỏ
-        btnDelete.setForeground(Color.WHITE);
-
+        btnDelete = new JButton(getScaledIcon("/images/waste.png", 20, 20));
+        btnDelete.setBackground(null);
+        btnDelete.setBorder(null);
+   
         pHeaderOrder.add(pTitleOrder, BorderLayout.CENTER);
         pHeaderOrder.add(btnDelete, BorderLayout.EAST);
 
@@ -692,8 +705,7 @@ public class POS extends JPanel {
         orderTableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                // Tạm thời khóa edit trực tiếp trên ô, sẽ xử lý logic tăng giảm sau
-                return false; 
+                return column==2;
             }
         };
 
@@ -704,6 +716,52 @@ public class POS extends JPanel {
         tblOrder.setShowGrid(false); 
         tblOrder.setIntercellSpacing(new Dimension(0, 0));
         tblOrder.setBackground(Color.decode("#EEEEEE"));
+        
+     // Gắn renderer và editor cho cột Số lượng (index 2)
+        tblOrder.getColumnModel().getColumn(2).setCellRenderer(new SoLuongRenderer());
+        tblOrder.getColumnModel().getColumn(2).setCellEditor(new SoLuongEditor());
+      
+     // ---------------------------------------------------------
+        // CODE THÊM VÀO ĐỂ CHỈNH KHOẢNG CÁCH VÀ FORMAT TIỀN TỆ
+        // ---------------------------------------------------------
+        
+        // 1. Renderer cho cột Tên món (Thêm khoảng trống bên phải để tách khỏi cột giá)
+        DefaultTableCellRenderer nameRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                // Tạo khoảng đệm: Trên 0, Trái 5, Dưới 0, Phải 10 (Cách cột giá 10px)
+                setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 10)); 
+                return this;
+            }
+        };
+
+        // 2. Renderer cho cột Giá và Thành tiền (Căn lề phải, format thêm dấu phẩy)
+        DefaultTableCellRenderer priceRenderer = new DefaultTableCellRenderer() {
+            DecimalFormat df = new DecimalFormat("#,###"); // Định dạng số: 29000.0 -> 29,000
+            
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (value instanceof Number) {
+                    setText(df.format(value)); 
+                }
+                setHorizontalAlignment(SwingConstants.RIGHT); // Đẩy số sang sát mép phải
+                setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5)); // Cách hai bên 5px
+                return this;
+            }
+        };
+
+        // 3. Áp dụng các Renderer vừa tạo vào bảng
+        tblOrder.getColumnModel().getColumn(0).setCellRenderer(nameRenderer);
+        tblOrder.getColumnModel().getColumn(1).setCellRenderer(priceRenderer);
+        tblOrder.getColumnModel().getColumn(3).setCellRenderer(priceRenderer);
+        
+        // (Tùy chọn) Chia lại tỷ lệ độ rộng các cột một lần nữa cho chuẩn form
+        tblOrder.getColumnModel().getColumn(0).setPreferredWidth(130); // Tên món
+        tblOrder.getColumnModel().getColumn(1).setPreferredWidth(60);  // Đơn giá
+        tblOrder.getColumnModel().getColumn(2).setPreferredWidth(95);  // Số lượng (nút bấm)
+        tblOrder.getColumnModel().getColumn(3).setPreferredWidth(70);  // Thành tiền
 
         // Bọc Table trong ScrollPane
         JScrollPane scrollPane = new JScrollPane(tblOrder);
@@ -724,7 +782,7 @@ public class POS extends JPanel {
         pTotalOrder.setBackground(Color.decode("#F3F4F6"));
         JLabel lblTotalText = new JLabel("Thành tiền:");
         lblTotalText.setFont(new Font("Arial", Font.BOLD, 14));
-        JLabel lblTotalValue = new JLabel("0 đ");
+        lblTotalValue = new JLabel("0 đ");
         lblTotalValue.setFont(new Font("Arial", Font.BOLD, 22));
         lblTotalValue.setForeground(Color.decode("#AF7341")); // Màu nâu đậm
         
@@ -853,4 +911,143 @@ public class POS extends JPanel {
 	    btnBan6.setEnabled(isEnable);
 	}
 	
+	public void setTongTien(double total) {
+	    // Format số tiền có dấu phẩy và chữ đ
+	    lblTotalValue.setText(String.format("%,.0f đ", total)); 
+	}
+	
+
+	// =====================================================
+// INNER CLASS: Renderer — hiển thị nút +/- trong ô
+// =====================================================
+public class SoLuongRenderer extends JPanel implements TableCellRenderer {
+    private JButton btnMinus;
+    private JLabel  lblQty;
+    private JButton btnPlus;
+
+    public SoLuongRenderer() {
+        // SỬ DỤNG GridBagLayout ĐỂ CĂN GIỮA TUYỆT ĐỐI THEO CẢ 2 CHIỀU
+        setLayout(new GridBagLayout());
+        setOpaque(true);
+
+        btnMinus = taoNut("−");
+        lblQty   = new JLabel("1", JLabel.CENTER);
+        lblQty.setFont(new Font("Arial", Font.BOLD, 13));
+        lblQty.setPreferredSize(new Dimension(25, 22)); // Nới rộng label ra một chút
+        btnPlus  = taoNut("+");
+
+        add(btnMinus);
+        add(lblQty);
+        add(btnPlus);
+    }
+
+    private JButton taoNut(String text) {
+        JButton btn = new JButton(text);
+        btn.setFont(new Font("Arial", Font.BOLD, 12));
+        btn.setPreferredSize(new Dimension(22, 22));
+        btn.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btn.setFocusPainted(false);
+        btn.setBackground(Color.decode("#AF7341"));
+        btn.setForeground(Color.WHITE);
+        btn.setBorderPainted(false);
+        return btn;
+    }
+
+    @Override
+    public java.awt.Component getTableCellRendererComponent(
+            JTable table, Object value, boolean isSelected,
+            boolean hasFocus, int row, int column) {
+        lblQty.setText(value != null ? value.toString() : "0");
+        setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+        return this;
+    }
+}
+
+// =====================================================
+// INNER CLASS: Editor — xử lý click nút +/- thật sự
+// =====================================================
+public class SoLuongEditor extends AbstractCellEditor implements TableCellEditor {
+    private JPanel   panel;
+    private JButton  btnMinus;
+    private JLabel   lblQty;
+    private JButton  btnPlus;
+    private int      currentValue;
+    private int      currentRow;
+
+    public SoLuongEditor() {
+        // SỬ DỤNG GridBagLayout ĐỂ CĂN GIỮA TUYỆT ĐỐI THEO CẢ 2 CHIỀU
+        panel = new JPanel(new GridBagLayout());
+
+        btnMinus = taoNut("−");
+        lblQty   = new JLabel("1", JLabel.CENTER);
+        lblQty.setFont(new Font("Arial", Font.BOLD, 13));
+        lblQty.setPreferredSize(new Dimension(25, 22)); // Nới rộng label ra một chút
+        btnPlus  = taoNut("+");
+
+        btnMinus.addActionListener(e -> {
+            if (currentValue > 1) {
+                currentValue--;
+                lblQty.setText(String.valueOf(currentValue));
+                capNhatDong();
+            } else {
+                fireEditingStopped();
+                orderTableModel.removeRow(currentRow);
+                capNhatTongTienSauEdit();
+            }
+        });
+
+        btnPlus.addActionListener(e -> {
+            currentValue++;
+            lblQty.setText(String.valueOf(currentValue));
+            capNhatDong();
+        });
+
+        panel.add(btnMinus);
+        panel.add(lblQty);
+        panel.add(btnPlus);
+    }
+
+    private JButton taoNut(String text) {
+        JButton btn = new JButton(text);
+        btn.setFont(new Font("Arial", Font.BOLD, 12));
+        btn.setPreferredSize(new Dimension(22, 22));
+        btn.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btn.setFocusPainted(false);
+        btn.setBackground(Color.decode("#AF7341"));
+        btn.setForeground(Color.WHITE);
+        btn.setBorderPainted(false);
+        return btn;
+    }
+
+    private void capNhatDong() {
+        orderTableModel.setValueAt(currentValue, currentRow, 2);
+        double donGia = (double) orderTableModel.getValueAt(currentRow, 1);
+        orderTableModel.setValueAt(donGia * currentValue, currentRow, 3);
+        capNhatTongTienSauEdit();
+    }
+
+    private void capNhatTongTienSauEdit() {
+        double tong = 0;
+        for (int i = 0; i < orderTableModel.getRowCount(); i++) {
+            tong += (double) orderTableModel.getValueAt(i, 3);
+        }
+        setTongTien(tong);
+    }
+
+    @Override
+    public java.awt.Component getTableCellEditorComponent(
+            JTable table, Object value, boolean isSelected, int row, int column) {
+        currentRow   = row;
+        currentValue = (int) value;
+        lblQty.setText(String.valueOf(currentValue));
+        panel.setBackground(table.getSelectionBackground());
+        return panel;
+    }
+
+    @Override
+    public Object getCellEditorValue() { return currentValue; }
+
+    @Override
+    public boolean isCellEditable(EventObject e) { return true; }
+}
 } 
