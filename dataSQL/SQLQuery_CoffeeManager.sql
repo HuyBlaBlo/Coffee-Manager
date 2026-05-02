@@ -1,4 +1,4 @@
--- Tao co so du lieu QLQuanCF
+﻿-- Tao co so du lieu QLQuanCF
 create database QLQuanCF
 
 on primary
