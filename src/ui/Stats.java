@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -23,6 +24,7 @@ import com.toedter.calendar.JDateChooser;
 
 import custom_ui.RoundedButton;
 import custom_ui.RoundedLabel;
+import custom_ui.RoundedPanel;
 import custom_ui.SimpleRoundedPanel;
 
 public class Stats extends JPanel{
@@ -40,6 +42,8 @@ public class Stats extends JPanel{
 	private JLabel lblRevenueGrowth;
 	private JLabel lblProfit;
 	private JLabel lblMargin;
+	private CardLayout centerCard;
+	private JPanel pnlCenterCard;
 
 	public Stats(){
         init();
@@ -57,8 +61,12 @@ public class Stats extends JPanel{
 		
 		pnlNorth.add(createToolbar(), BorderLayout.NORTH);
 		pnlNorth.add(createKpiArea(), BorderLayout.CENTER);
+		
 		this.add(pnlNorth, BorderLayout.NORTH);
 		
+		JPanel pnlCenter = createCenterArea();
+		
+		this.add(pnlCenter);
 		// khu vuc trung tam
 		
 	}
@@ -294,6 +302,77 @@ public class Stats extends JPanel{
         card.add(lblIcon, BorderLayout.EAST);
 
         return card;
+    }
+    
+    // phan trung tam, centerArea
+    
+    public JPanel createCenterArea () {
+    	centerCard = new CardLayout();
+    	pnlCenterCard = new JPanel(centerCard);
+    	pnlCenterCard.setOpaque(false);
+    	pnlCenterCard.setBorder(new EmptyBorder(15, 0, 0, 0));
+    	
+    	// khung ngày hôm nay 
+    	SimpleRoundedPanel pnlTodayView = new SimpleRoundedPanel(20, Color.WHITE, Color.decode("#E5E7EB"));
+        pnlTodayView.setLayout(new BorderLayout(0, 20));
+        pnlTodayView.setBorder(new EmptyBorder(20, 20, 20, 20));
+        
+        JPanel pnlHeaderToday = new JPanel(new BorderLayout());
+        pnlHeaderToday.setOpaque(false);
+        JLabel lblTitleToday = new JLabel("TỶ TRỌNG SẢN PHẨM");
+        lblTitleToday.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTitleToday.setForeground(Color.decode("#2D1A10"));
+    	
+        RoundedLabel lblDateStats = new RoundedLabel("Hôm nay (22/04/2026)", 10, Color.decode("#F3F4F6"));
+        lblDateStats.setFont(new Font("SansSerif", Font.BOLD, 12));
+        lblDateStats.setForeground(Color.decode("#6B7280"));
+        lblDateStats.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
+        
+        pnlHeaderToday.add(lblTitleToday, BorderLayout.WEST);
+        pnlHeaderToday.add(lblDateStats, BorderLayout.EAST);
+        
+        // bieểu đồ tròn dành cho các sản phẩm bán trong ngày
+        pnlTodayView.add(pnlHeaderToday, BorderLayout.NORTH);
+        pnlTodayView.add(new JLabel("CHỖ NÀY VẼ BIỂU ĐỒ DONUT BỰ", SwingConstants.CENTER), BorderLayout.CENTER);
+        
+        //========================================================================================================
+    	//khung 7 ngày vừa qua, tháng này, năm nay;
+        JPanel pnlRangeView = new JPanel(new BorderLayout(15, 0)); 
+        pnlRangeView.setOpaque(false);
+
+        // Khung trái: BIỂU ĐỒ CỘT
+        SimpleRoundedPanel pnlBarBox = new SimpleRoundedPanel(20, Color.WHITE, Color.decode("#E5E7EB"));
+        pnlBarBox.setLayout(new BorderLayout());
+        pnlBarBox.setBorder(new EmptyBorder(20, 20, 20, 20));
+        
+        JLabel lblTitleBar = new JLabel("DOANH THU");
+        lblTitleBar.setFont(new Font("SansSerif", Font.BOLD, 18));
+        lblTitleBar.setForeground(Color.decode("#2D1A10"));
+        pnlBarBox.add(lblTitleBar, BorderLayout.NORTH);
+        
+        pnlBarBox.add(new JLabel("CHỖ NÀY VẼ BIỂU ĐỒ CỘT", SwingConstants.CENTER), BorderLayout.CENTER);
+
+        //khung phải: TỶ TRỌNG SẢN PHẨM
+        SimpleRoundedPanel pnlDonutBox = new SimpleRoundedPanel(20, Color.WHITE, Color.decode("#E5E7EB"));
+        pnlDonutBox.setLayout(new BorderLayout());
+        pnlDonutBox.setBorder(new EmptyBorder(20, 20, 20, 20));
+        pnlDonutBox.setPreferredSize(new Dimension(380, 0));
+
+        JLabel lblTitleDonut = new JLabel("TỶ TRỌNG SẢN PHẨM");
+        lblTitleDonut.setFont(new Font("SansSerif", Font.BOLD, 16));
+        lblTitleDonut.setForeground(Color.decode("#2D1A10"));
+        pnlDonutBox.add(lblTitleDonut, BorderLayout.NORTH);
+        pnlDonutBox.add(new JLabel("BIỂU ĐỒ DONUT NHỎ", SwingConstants.CENTER), BorderLayout.CENTER);
+
+        pnlRangeView.add(pnlBarBox, BorderLayout.CENTER);
+        pnlRangeView.add(pnlDonutBox, BorderLayout.EAST); 
+        
+        pnlCenterCard.add(pnlTodayView, "CARD_TODAY");
+        pnlCenterCard.add(pnlRangeView, "CARD_RANGE");
+        
+        // mặc định vô là hiện thoogns kê ngày trước 
+        centerCard.show(pnlCenterCard, "CARD_TODAY");
+    	return pnlCenterCard;
     }
 }
 
