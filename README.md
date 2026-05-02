@@ -3,7 +3,6 @@
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 ![SQL Server](https://img.shields.io/badge/SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)
 ![JFreeChart](https://img.shields.io/badge/Library-JFreeChart-blue?style=for-the-badge)
-![Apache POI](https://img.shields.io/badge/Library-Apache_POI-green?style=for-the-badge)
 
 > Dự án phần mềm Quản lý điểm bán hàng (Point of Sale) dành cho mô hình Quán Cà Phê, được xây dựng trên nền tảng Java Swing với kiến trúc MVC chuẩn mực. Tập trung vào trải nghiệm người dùng (UX) hiện đại và khả năng phân tích dữ liệu chuyên sâu.
 
